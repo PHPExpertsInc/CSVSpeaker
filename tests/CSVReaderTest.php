@@ -2,6 +2,7 @@
 
 namespace PHPExperts\CSVSpeaker\Tests;
 
+use InvalidArgumentException;
 use PHPExperts\CSVSpeaker\CSVReader;
 use PHPUnit\Framework\TestCase;
 use SplFileObject;
@@ -55,5 +56,31 @@ CSV;
         ];
         $actual = CSVReader::fromString($csv)->toArray();
         self::assertEquals($expected, $actual);
+    }
+
+    public function testCanBeLoadedViaAFileName()
+    {
+        $tempCSVfilename = tempnam(sys_get_temp_dir(), 'tmpcsv-') . '.csv';
+        $csv = <<<CSV
+a,b,c,d
+e,f,g,h
+
+CSV;
+        file_put_contents($tempCSVfilename, $csv);
+
+        $expected = [
+            ['a', 'b', 'c', 'd'],
+            ['e', 'f', 'g', 'h'],
+        ];
+
+        $actual = CSVReader::fromFile($tempCSVfilename, false)->toArray();
+        self::assertEquals($expected, $actual);
+    }
+
+    public function testThrowAnExceptionWhenGivenAnInvalidFileType()
+    {
+        self::expectException(InvalidArgumentException::class);
+
+        CSVReader::fromFile(1234);
     }
 }

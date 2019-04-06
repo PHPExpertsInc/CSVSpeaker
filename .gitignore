@@ -1,3 +1,4 @@
-.env
+/coverage
+.env*
 /vendor
 /.idea
