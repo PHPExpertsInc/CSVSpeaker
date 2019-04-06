@@ -107,18 +107,19 @@ composer require phpexperts/csv-speaker
 
 # Use cases
 
-PHPExperts\CSVSpeaker\CSVReader
- ✔ Will convert a csv string to an array
- ✔ Will output a csv file to an array
- ✔ Will use the first row as array keys by default
- ✔ Can be loaded via a file name
- ✔ Throw an exception when given an invalid file type
+PHPExperts\CSVSpeaker\CSVReader  
+ ✔ Will convert a csv string to an array  
+ ✔ Will output a csv file to an array  
+ ✔ Will use the first row as array keys by default  
+ ✔ Can be loaded via a file name  
+ ✔ Throw an exception when given an invalid file type  
+ ✔ Will return an empty array if input is not proper csv  
 
-PHPExperts\CSVSpeaker\CSVWriter
- ✔ Converts a simple array to csv
- ✔ Can append rows to existing csv
- ✔ Will set keys as header row
- ✔ Can add multiple rows with the same header
+PHPExperts\CSVSpeaker\CSVWriter  
+ ✔ Converts a simple array to csv  
+ ✔ Can append rows to existing csv  
+ ✔ Will set keys as header row  
+ ✔ Can add multiple rows with the same header  
  ✔ Will gracefully ignore empty arrays
 
 

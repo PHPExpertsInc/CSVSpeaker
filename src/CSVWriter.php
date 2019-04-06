@@ -2,6 +2,7 @@
 
 namespace PHPExperts\CSVSpeaker;
 
+use RuntimeException;
 use SplFileObject;
 
 final class CSVWriter
@@ -14,10 +15,19 @@ final class CSVWriter
 
     private function convertToCsv(array $row, $delimiter = ','): string
     {
-        $fh = fopen('php://memory', 'w+');
+        if (!($fh = fopen('php://memory', 'w+'))) {
+            // @codeCoverageIgnoreStart - Untestable extreme edge case.
+            throw new RuntimeException('Ran out of memory.');
+            // @codeCoverageIgnoreEnd
+        }
+
         fputcsv($fh, $row, $delimiter);
         rewind($fh);
-        $csv = stream_get_contents($fh);
+        if (!($csv = stream_get_contents($fh))) {
+            // @codeCoverageIgnoreStart - Untestable extreme edge case.
+            throw new RuntimeException('Could not read the generated CSV file.');
+            // @codeCoverageIgnoreEnd
+        }
         fclose($fh);
 
         return $csv;

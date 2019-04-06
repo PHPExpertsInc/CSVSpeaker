@@ -3,6 +3,7 @@
 namespace PHPExperts\CSVSpeaker;
 
 use InvalidArgumentException;
+use RuntimeException;
 use SplFileObject;
 
 class CSVReader
@@ -54,36 +55,35 @@ class CSVReader
         return new self($csvFile, $firstIsHeader);
     }
 
-    private function readCSVGenerator()
+    private function readCSVGenerator(array $headers)
     {
-        $header = [];
         while (!$this->csvFile->eof()) {
             $data = $this->csvFile->fgetcsv();
 
-            if ($data === [null]) {
+            // Return [] if it is not CSV.
+            if ($data === [null] || !is_array($data) || count($data) === 1) {
                 continue;
             }
 
-            if (!$this->firstIsHeader) {
+            if (empty($headers)) {
                 yield $data;
 
                 continue;
             }
 
-            if (empty($header)) {
-                $header = $data;
-
-                continue;
-            }
-
-            yield array_combine($header, $data);
+            yield array_combine($headers, $data);
         }
     }
 
     public function toArray()
     {
+        $headers = [];
+        if ($this->firstIsHeader) {
+            $headers = (array) $this->csvFile->fgetcsv();
+        }
+
         $output = [];
-        foreach ($this->readCSVGenerator() as $row) {
+        foreach ($this->readCSVGenerator($headers) as $row) {
             $output[] = $row;
         }
 
