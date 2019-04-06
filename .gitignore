@@ -1,4 +1,5 @@
+/composer.lock
 /coverage
 .env*
-/vendor
 /.idea
+/vendor

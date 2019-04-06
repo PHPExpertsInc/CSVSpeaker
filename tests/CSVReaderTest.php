@@ -83,4 +83,20 @@ CSV;
 
         CSVReader::fromFile(1234);
     }
+
+    public function testWillReturnAnEmptyArrayIfInputIsNotProperCsv()
+    {
+        $expected = [];
+        $actual = CSVReader::fromString('asdfasdfasdf---3')->toArray();
+        self::assertEquals($expected, $actual);
+
+        $actual = CSVReader::fromString('asdfasdfasdf---3', false)->toArray();
+        self::assertEquals($expected, $actual);
+
+        $actual = CSVReader::fromString('', false)->toArray();
+        self::assertEquals($expected, $actual);
+
+        $actual = CSVReader::fromFile(new SplFileObject(tempnam(sys_get_temp_dir(), 'asdf')))->toArray();
+        self::assertEquals($expected, $actual);
+    }
 }
