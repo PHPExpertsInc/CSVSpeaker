@@ -1,8 +1,8 @@
 # CSVSpeaker
 
 [![TravisCI](https://travis-ci.org/phpexpertsinc/CSVSpeaker.svg?branch=master)](https://travis-ci.org/phpexpertsinc/CSVSpeaker)
-[![Maintainability](https://api.codeclimate.com/v1/badges/ba05b5ebfa6bb211619e/maintainability)](https://codeclimate.com/github/phpexpertsinc/CSVSpeaker/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/ba05b5ebfa6bb211619e/test_coverage)](https://codeclimate.com/github/phpexpertsinc/CSVSpeaker/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/78f849d7bdcca99eb720/maintainability)](https://codeclimate.com/github/phpexpertsinc/CSVSpeaker/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/78f849d7bdcca99eb720/test_coverage)](https://codeclimate.com/github/phpexpertsinc/CSVSpeaker/test_coverage)
 
 CSVSpeaker is a PHP Experts, Inc., Project for easily converting CSV to/from arrays.
 
@@ -111,6 +111,8 @@ PHPExperts\CSVSpeaker\CSVReader
  ✔ Will convert a csv string to an array
  ✔ Will output a csv file to an array
  ✔ Will use the first row as array keys by default
+ ✔ Can be loaded via a file name
+ ✔ Throw an exception when given an invalid file type
 
 PHPExperts\CSVSpeaker\CSVWriter
  ✔ Converts a simple array to csv
