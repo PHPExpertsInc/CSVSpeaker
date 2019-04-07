@@ -12,8 +12,9 @@ before_script:
   - travis_retry composer self-update
   - travis_retry composer install --no-interaction --prefer-source
 
-script: 
+script:
   - mkdir -p build/logs
+  - php vendor/bin/php-cs-fixer fix --allow-risky=yes --dry-run --diff
   - php vendor/bin/phpstan analyze --level max src
   - vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml
 
