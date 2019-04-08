@@ -1,9 +1,20 @@
 <?php declare(strict_types=1);
 
+/**
+ * This file is part of CSVSpeaker, a PHP Experts, Inc., Project.
+ *
+ * Copyright © 2019 PHP Experts, Inc.
+ * Author: Theodore R. Smith <theodore@phpexperts.pro>
+ *   GPG Fingerprint: 4BF8 2613 1C34 87AC D28F  2AD8 EB24 A91D D612 5690
+ *   https://www.phpexperts.pro/
+ *   https://github.com/phpexpertsinc/CSVSpeaker
+ *
+ * This file is licensed under the MIT License.
+ */
+
 namespace PHPExperts\CSVSpeaker;
 
 use InvalidArgumentException;
-use RuntimeException;
 use SplFileObject;
 
 class CSVReader
@@ -25,7 +36,7 @@ class CSVReader
         unset($this->csvFile);
     }
 
-    public static function fromString(string $csv, bool $firstIsHeader = true, string $delimiter=',')
+    public static function fromString(string $csv, bool $firstIsHeader = true, string $delimiter = ',')
     {
         $csvFile = new SplFileObject('php://memory', 'r+');
         $csvFile->setCsvControl($delimiter);
@@ -35,16 +46,15 @@ class CSVReader
         return new self($csvFile, $firstIsHeader);
     }
 
-    public static function fromFile($file, bool $firstIsHeader = true, string $delimiter=','): self
+    public static function fromFile($file, bool $firstIsHeader = true, string $delimiter = ','): self
     {
-        $getSplFile = function($file): SplFileObject {
+        $getSplFile = function ($file): SplFileObject {
             if ($file instanceof SplFileObject) {
                 return $file;
             }
-            else if (is_string($file)) {
+            if (is_string($file)) {
                 return new SplFileObject($file);
-            }
-            else {
+            } else {
                 throw new InvalidArgumentException('Invalid file type.');
             }
         };
