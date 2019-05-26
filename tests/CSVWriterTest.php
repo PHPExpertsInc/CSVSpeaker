@@ -97,6 +97,26 @@ CSV;
         self::assertEquals($expected, $csv);
     }
 
+    public function testCanAddMultipleRowsAtOnce()
+    {
+        $input = [
+            ['First Name' => 'John', 'Last Name' => 'Galt', 'Age' => 37],
+            ['First Name' => 'Mary', 'Last Name' => 'Jane', 'Age' => 27],
+        ];
+
+        $expected = <<<CSV
+"First Name","Last Name",Age
+John,Galt,37
+Mary,Jane,27
+
+CSV;
+
+        $this->csvWriter->addRows($input);
+        $csv = $this->csvWriter->getCSV();
+
+        self::assertEquals($expected, $csv);
+    }
+
     public function testWillGracefullyIgnoreEmptyArrays()
     {
         $this->csvWriter->addRow([]);
