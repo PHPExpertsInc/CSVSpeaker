@@ -90,6 +90,13 @@ final class CSVWriter
         $this->csv .= $this->convertToCsv($row);
     }
 
+    public function addRows(array $rows): void
+    {
+        foreach ($rows as $row) {
+            $this->addRow($row);
+        }
+    }
+
     public function getCSV(): string
     {
         return $this->csv;
