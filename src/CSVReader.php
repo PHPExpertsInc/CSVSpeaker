@@ -67,8 +67,11 @@ class CSVReader
 
     private function readCSVGenerator(array $headers)
     {
+        $headerCount = count($headers);
+        $lineNumber = 0;
         while (!$this->csvFile->eof()) {
             $data = $this->csvFile->fgetcsv();
+            ++$lineNumber;
 
             // Return [] if it is not CSV.
             if ($data === [null] || !is_array($data) || count($data) === 1) {
@@ -79,6 +82,11 @@ class CSVReader
                 yield $data;
 
                 continue;
+            }
+
+            // Sanity check to avoid `Error: array_combine(): Both parameters should have an equal number of elements`
+            if (count($data) != $headerCount) {
+                throw new InvalidCSVException($this->csvFile->getPathname(), $lineNumber, $headers, $data);
             }
 
             yield array_combine($headers, $data);
