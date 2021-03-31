@@ -65,7 +65,7 @@ class CSVReader
         return new self($csvFile, $firstIsHeader);
     }
 
-    private function readCSVGenerator(array $headers)
+    public function readCSVGenerator(array $headers)
     {
         $headerCount = count($headers);
         $lineNumber = 0;
@@ -93,12 +93,22 @@ class CSVReader
         }
     }
 
-    public function toArray()
+    /**
+     * @return string[]
+     */
+    public function getHeaders(): array
     {
         $headers = [];
         if ($this->firstIsHeader) {
             $headers = (array) $this->csvFile->fgetcsv();
         }
+
+        return $headers;
+    }
+
+    public function toArray()
+    {
+        $headers = $this->getHeaders();
 
         $output = [];
         foreach ($this->readCSVGenerator($headers) as $row) {
