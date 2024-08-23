@@ -9,6 +9,12 @@ CSVSpeaker is a PHP Experts, Inc., Project for easily converting CSV to/from arr
 This library's main goal is to make it drop-dead simple to get an array from a CSV string,
 and also vice versa.
 
+**Special Note:** This project has been updated to support the deprecation of 
+`fgetcsv` and `fputcsv`'s `$enclosure` parameter.
+
+See [**CSV and PHP 8.4+**](http://archive.today/2024.08.23-131404/https://nyamsprod.com/blog/csv-and-php8-4/)
+for details.
+
 ## Installation
 
 Via Composer
