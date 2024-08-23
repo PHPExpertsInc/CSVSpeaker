@@ -24,7 +24,7 @@ final class CSVWriter
     /** @var string */
     private $header;
 
-    private function convertToCsv(array $row, $delimiter = ','): string
+    private function convertToCsv(array $row, string $delimiter = ',', string $quoteSymbol = "\"", $eol = "\n", bool $useLegacyEscape = false): string
     {
         if (!($fh = fopen('php://memory', 'w+'))) {
             // @codeCoverageIgnoreStart - Untestable extreme edge case.
@@ -32,7 +32,12 @@ final class CSVWriter
             // @codeCoverageIgnoreEnd
         }
 
-        fputcsv($fh, $row, $delimiter);
+        // Support PHP v8.4+'s deprecation of the $escape parameter.
+        // @see https://nyamsprod.com/blog/csv-and-php8-4/
+        // @see https://archive.is/NIrda
+        $escape = $useLegacyEscape === true ? "\\" : '';
+
+        fputcsv($fh, $row, $delimiter, $quoteSymbol, $escape, $eol);
         rewind($fh);
         if (!($csv = stream_get_contents($fh))) {
             // @codeCoverageIgnoreStart - Untestable extreme edge case.

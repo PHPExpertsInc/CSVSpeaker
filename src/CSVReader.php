@@ -36,17 +36,17 @@ class CSVReader
         unset($this->csvFile);
     }
 
-    public static function fromString(string $csv, bool $firstIsHeader = true, string $delimiter = ',')
+    public static function fromString(string $csv, bool $firstIsHeader = true, string $delimiter = ',',  string $quoteSymbol = "\"", bool $useLegacyEscape = false)
     {
         $csvFile = new SplFileObject('php://memory', 'r+');
-        $csvFile->setCsvControl($delimiter);
+        self::setCsvControl($csvFile, $delimiter, $quoteSymbol, $useLegacyEscape);
         $csvFile->fwrite($csv);
         $csvFile->rewind();
 
         return new self($csvFile, $firstIsHeader);
     }
 
-    public static function fromFile($file, bool $firstIsHeader = true, string $delimiter = ','): self
+    public static function fromFile($file, bool $firstIsHeader = true, string $delimiter = ',', string $quoteSymbol = "\"", bool $useLegacyEscape = false): self
     {
         $getSplFile = function ($file): SplFileObject {
             if ($file instanceof SplFileObject) {
@@ -60,9 +60,19 @@ class CSVReader
         };
 
         $csvFile = $getSplFile($file);
-        $csvFile->setCsvControl($delimiter);
+        self::setCsvControl($csvFile, $delimiter, $quoteSymbol, $useLegacyEscape);
 
         return new self($csvFile, $firstIsHeader);
+    }
+
+    private static function setCsvControl(SplFileObject &$csvFile, string $delimiter, string $quoteSymbol, bool $useLegacyEscape)
+    {
+        // Support PHP v8.4+'s deprecation of the $escape parameter.
+        // @see https://nyamsprod.com/blog/csv-and-php8-4/
+        // @see https://archive.is/NIrda
+        $escape = $useLegacyEscape === true ? "\\" : '';
+
+        $csvFile->setCsvControl($delimiter, $quoteSymbol, $escape);
     }
 
     public function readCSVGenerator(array $headers)
@@ -70,6 +80,7 @@ class CSVReader
         $headerCount = count($headers);
         $lineNumber = 0;
         while (!$this->csvFile->eof()) {
+
             $data = $this->csvFile->fgetcsv();
             ++$lineNumber;
 
